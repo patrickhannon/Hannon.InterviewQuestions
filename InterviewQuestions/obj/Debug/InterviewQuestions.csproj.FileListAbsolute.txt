@@ -1,0 +1,7 @@
+C:\SourceControl\Hannon.InterviewQuestions\InterviewQuestions\bin\Debug\InterviewQuestions.exe.config
+C:\SourceControl\Hannon.InterviewQuestions\InterviewQuestions\bin\Debug\InterviewQuestions.exe
+C:\SourceControl\Hannon.InterviewQuestions\InterviewQuestions\bin\Debug\InterviewQuestions.pdb
+C:\SourceControl\Hannon.InterviewQuestions\InterviewQuestions\obj\Debug\InterviewQuestions.csprojAssemblyReference.cache
+C:\SourceControl\Hannon.InterviewQuestions\InterviewQuestions\obj\Debug\InterviewQuestions.csproj.CoreCompileInputs.cache
+C:\SourceControl\Hannon.InterviewQuestions\InterviewQuestions\obj\Debug\InterviewQuestions.exe
+C:\SourceControl\Hannon.InterviewQuestions\InterviewQuestions\obj\Debug\InterviewQuestions.pdb
