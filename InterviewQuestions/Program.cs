@@ -13,7 +13,28 @@ namespace InterviewQuestions
         {
             //Print all valid phone numbers of length
             //PrintNumbersTo250();
-            Fibonacci_Iterative(20);
+            //substring addition write a program to add the substring
+            //TestIsInSubString();
+            ////Length is given as input Print all possible permutations of numbers between 0-9
+            ////todo TestAllPossiblePemutationsForNumber0To9();
+            ////Stepping number
+            ////Given N and M find all stepping numbers in range N to M. The stepping number: A number is called as a stepping number if the adjacent digits have a difference of 1.e.g 123 is stepping number, but 358 is not a stepping number.
+            //Debug.WriteLine(IsSteppingNumber(123));
+            //Debug.WriteLine(IsSteppingNumber(358));
+            //Palindrome: a word, phrase, number, or other sequence of symbols or elements, whose meaning may be
+            //interpreted the same way in either forward or reverse
+            FindPalindrome();
+            ////GetAllPossibleDatesForAGivenMonth();
+            //GetAllPossibleDatesForAGivenYear();
+
+            //LookAndSayTest();
+
+            //Seed of a number Consider a number 123, the product of the number with its digits(123 * 1 * 2 * 3 = 738) is 738.
+            //Therefore, 123 is the seed root of 738
+            SeedOfNumber(738);
+            //FixedSeedRandoms(738);
+            //FixedSeedRandoms(1716);
+            //Fibonacci_Iterative(20);
         }
 
 
@@ -50,25 +71,7 @@ namespace InterviewQuestions
         }
 
 
-        //substring addition write a program to add the substring
-        //TestIsInSubString();
-        ////Length is given as input Print all possible permutations of numbers between 0-9
-        ////todo TestAllPossiblePemutationsForNumber0To9();
-        ////Stepping number
-        ////Given N and M find all stepping numbers in range N to M. The stepping number: A number is called as a stepping number if the adjacent digits have a difference of 1.e.g 123 is stepping number, but 358 is not a stepping number.
-        //Debug.WriteLine(IsSteppingNumber(123));
-        //Debug.WriteLine(IsSteppingNumber(358));
-        ////Palindrome: a word, phrase, number, or other sequence of symbols or elements, whose meaning may be
-        ////interpreted the same way in either forward or reverse
-        ////GetAllPossibleDatesForAGivenMonth();
-        //GetAllPossibleDatesForAGivenYear();
-
-        //LookAndSayTest();
-        //FindPalindrome();
-        ////Consider a number 123, the product of the number with its digits(123 * 1 * 2 * 3 = 738) is 738.
-        ////Therefore, 123 is the seed root of 738
-        //FixedSeedRandoms(738);
-        //FixedSeedRandoms(1716);
+        
 
         //}
 
@@ -215,6 +218,27 @@ namespace InterviewQuestions
             RunIntNDoubleRandoms(fixRand);
         }
 
+        public static void SeedOfNumber(int number)
+        {
+            int seed = 0, seed2;
+
+            while (seed <= number)
+            {
+                seed2 = seed;
+                int val = seed;
+                while (seed > 0)
+                {
+                    val = val * (seed % 10);
+                    seed = seed / 10;
+
+                }
+                seed = seed2 + 1;
+                if (val == number)
+                {
+                    Debug.WriteLine("seed is " + (seed - 1));
+                }
+            }
+        }
         static void RunIntNDoubleRandoms(Random randObj)
         {
             // Generate the first six random integers.
