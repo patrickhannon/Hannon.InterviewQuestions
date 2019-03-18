@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Security.Policy;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace InterviewQuestions
 {
@@ -87,13 +90,6 @@ namespace InterviewQuestions
             //0 - NULL
             //1 - v, t, f, r, q
             //2 - f, t, k
-            //
-            //
-            //
-            //
-            //
-            //
-            
             GenerateAllPossibleCharSequences(int.Parse(keystrokes));
             
             //Write an efficient program to find the sum of contiguous subarray within
@@ -125,11 +121,591 @@ namespace InterviewQuestions
             //8 isn't working, 1 key... 
             //The sequence is correct
             Debug.WriteLine($"Is Password Validated: {ValidatePassword("164", "18684", '8')}");
-            */
+            
 
             //A program removes all non-numeric characters
             Debug.WriteLine(MassageAlphaNumerics("123edfrs&^%dd"));
+            
+            Debug.WriteLine(PhoneNumbersMassage("12234567890", new char[] { '1','2','3' }));
+            
+            TwoDimensionalSpaceAllPermutations();
+            
+            WalkingRobot(2);
+            
+            ConstructTriangleFormArray();
+            
+            GetElementsClockWise2DArray();
+            GetElementsCountClockWise2DArray();
+            
+            PatientsNProblems();
+            
+            //pass
+            Debug.WriteLine(VerifyIfPasswordIsValid("143183Qs"));
+            //fail
+            Debug.WriteLine(VerifyIfPasswordIsValid("123123Qs"));
+            Debug.WriteLine(PrintContinuousAlphabet());
+            PrintAllPossibleCombKeyPad("23");
+            TotalCostOfAirlineTicket(4);
+            ReverseWordsInString();
+            ChangeToGiven(288);
+            BasketHitRates();
+            SeriesOfIntsOddEven();
+            Debug.WriteLine(SortString("Abcdefa"));
+            
+            //Colorful
+            Debug.WriteLine(ColorfulNumbers(new[] { 2, 6, 3, }));
+            //Not Colorful
+            Debug.WriteLine(ColorfulNumbers(new[] { 2, 3, 6, }));
+            */
+            PrintWeekForDate(DateTime.Now);
+
         }
+
+        public static void PrintWeekForDate(DateTime date)
+        {
+            CultureInfo defaultCultureInfo = CultureInfo.CurrentCulture;
+            var first = GetFirstDayOfWeek(date, defaultCultureInfo);
+            var last = first.AddDays(7);
+            Debug.WriteLine(string.Format("First day {0}, Last day {1}",first, last));
+        }
+
+        /// <summary>
+        /// Returns the first day of the week that the specified date 
+        /// is in. 
+        /// </summary>
+        public static DateTime GetFirstDayOfWeek(DateTime dayInWeek, CultureInfo cultureInfo)
+        {
+            DayOfWeek firstDay = cultureInfo.DateTimeFormat.FirstDayOfWeek;
+            DateTime firstDayInWeek = dayInWeek.Date;
+            while (firstDayInWeek.DayOfWeek != firstDay)
+                firstDayInWeek = firstDayInWeek.AddDays(-1);
+
+            return firstDayInWeek;
+        }
+
+        public static bool ColorfulNumbers(int[] numbers)
+        {
+            //Determine if a number is colorful or not;
+            //263, definition totals are all different 
+            //2,6,3 2x6, 6x3, 2x3x6
+            //total two numbers 
+            List<int> sums = new List<int>();
+            //Add two
+            for (int i= 0; i < numbers.Length; i++)
+            {
+                if (i < numbers.Length - 1)
+                {
+                    var s = numbers[i];
+                    var e = numbers[i + 1];
+                    sums.Add(s * e);
+                }
+            }
+            //Adds them all up
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                if (i < numbers.Length - 1)
+                {
+                    var s = numbers[i];
+                    var e = numbers[i + 1];
+                    var t = numbers[i + 2];
+                    sums.Add(s * e * t);
+                    break;
+                }
+            }
+            //Two with the same number indicates not a colorful number
+            var duplicates = sums
+            .GroupBy(i => i)
+            .Where(g => g.Count() > 1)
+            .Select(g => g.Key);
+                foreach (var d in duplicates)
+                    Debug.WriteLine(d); // 4,3
+
+            if (duplicates.Any())
+                return true;
+            return false;
+        }
+
+        public static string SortString(string input)
+        {
+            char[] chars = input.ToArray();
+            Array.Sort(chars);
+            return new string(chars);
+        }
+
+        public static void SeriesOfIntsOddEven()
+        {
+            var odd = 0;
+            var even = 0;
+            Console.WriteLine("Press 0 then enter to stop");
+            do
+            {
+                while (!Console.KeyAvailable)
+                {
+                    // Do something
+                }
+            } while (Console.ReadKey(true).Key != ConsoleKey.D0);
+            var keys = Console.ReadLine();
+            int numeric = 0;
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (int.TryParse(keys[i].ToString(), out numeric))
+                {
+                    if (numeric % 2 == 0)
+                        even++;
+                    else
+                        odd++;
+                }
+            }
+            Debug.WriteLine(string.Format("Total even: {0}", even));
+            Debug.WriteLine(string.Format("Total odd: {0}", odd));
+        }
+
+        public static void FrequencyOfMedicine()
+        {
+
+        }
+
+        public static void BasketHitRates()
+        {
+            //HitRate = hits/numberOfChances
+
+        }
+
+        public static void ChangeToGiven(int amount)
+        {
+            int remaining = 0;
+            //give out 2.88 based on dominations of $1, 1c, 5c, 10c, 25c
+            var tdollar = amount / 100;
+            remaining = amount - (tdollar * 100);
+
+            var tquarters = remaining / 25;
+            remaining = remaining - (tquarters * 25);
+
+            var tdim = remaining / 10;
+            remaining = remaining - (tdim * 10);
+
+            var tnickel = remaining / 5;
+            remaining = remaining - (tnickel *5);
+
+            var tcent = remaining / 1;
+            remaining = remaining - tcent;
+
+            //zero
+            Debug.WriteLine("total dollars:"+tdollar);
+            Debug.WriteLine("total tquarters:" + tquarters);
+            Debug.WriteLine("total tdim:" + tdim);
+            Debug.WriteLine("total tnickel:" + tnickel);
+            Debug.WriteLine("total tcent:" + tcent);
+        }
+
+        public static void ReverseWordsInString()
+        {
+            var str = "This is great";
+            string[] words = str.Split(new char[0]);
+            Array myArray = Array.CreateInstance(typeof(String), 3);
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                myArray.SetValue(words[i], i);
+            }
+
+            PrintIndexAndValues(myArray);
+            Array.Reverse(myArray);
+            PrintIndexAndValues(myArray);
+        }
+
+        public static void PrintIndexAndValues(Array myArray)
+        {
+            for (int i = myArray.GetLowerBound(0); i <= myArray.GetUpperBound(0); i++)
+                Console.WriteLine("\t[{0}]:\t{1}", i, myArray.GetValue(i));
+        }
+
+        public static void TotalCostOfAirlineTicket(int totalPersons)
+        {
+            double baseFare = 40.0;
+            double tax = 0.04;
+            double segments = 10.0;//max is two segments
+            double security = 10.0; //max is three segments
+            double securityTotal;
+            double segmentsTotals;
+
+            if (totalPersons > 2)
+                segmentsTotals = 2 * segments;
+            else
+                segmentsTotals = totalPersons * segments;
+
+            if (totalPersons > 3)
+                securityTotal = 3 * security;
+            else
+                securityTotal = totalPersons * security;
+
+            double total = baseFare + (baseFare*tax)+ 
+                           (segmentsTotals) + (securityTotal);
+
+            Debug.WriteLine(total);
+        }
+
+        public static string ColorfulNumber()
+        {
+
+            return string.Empty;
+        }
+
+        public static string PrintSequencesOfInput()
+        {
+            String str = "4678912356012356";
+            StringBuilder sb = new StringBuilder();
+            bool flag = false;
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i] + 1 == str[i])
+                {
+                    sb.Append(str[i - 1]);
+                    flag = true;
+                }
+                else
+                {
+                    if (flag)
+                    {
+                        sb.Append(str[i - 1]);
+                        sb.Append(';');
+                    }
+                    flag = false;
+                }
+            }
+            if(str[str.Length-2]+1 == str[str.Length-1])
+            {
+                sb.Append(str[str.Length - 1]);
+                sb.Append(';');
+            }
+
+            return sb.ToString();
+        }
+
+        public static void PrintAllPossibleCombKeyPad(string key)
+        {
+            List<KeyPad> keypad = new List<KeyPad>();
+            keypad.Add(new KeyPad(){ key = '2', Alphas = "ABC"});
+            keypad.Add(new KeyPad() { key = '3', Alphas = "DEF" });
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < key.Length; i++)
+            {
+                //figure out what letters are applicable
+                var k = key[i].ToString();
+                var al = keypad.Where(x => x.key.ToString() == k).First();
+                if (al != null)
+                {
+                    sb.Append(al.Alphas);
+                }
+            }
+
+            var kk = sb.ToString();
+            //Figure out all possible combinations...
+            permute(kk, 0, kk.Length -1);
+        }
+
+        public static string PrintContinuousAlphabet()
+        {
+             return "AbcDefljdflsjflmnopflsjflasjftuvWxYz";
+        }
+        
+        //Must be 5-12 characters long
+        //must contain at least one number and one lower case
+        //
+        public static bool VerifyIfPasswordIsValid(string pass)
+        {
+            List<string> sequences = new List<string>();
+            //populate with all sequences
+            for (int i = 0; i < pass.Length; i++)
+            {
+                if (i < pass.Length-1)
+                {
+                    var first = pass[i].ToString();
+                    var next = pass[i + 1].ToString();
+                    sequences.Add(first+next);
+                }
+            }
+            //check for 5-12 characters long
+            if (!PasswordLength(pass))
+                return false;
+            //At least one number & one lower case 
+            if (!OneUpperOneLower(pass))
+                return false;
+            //Check to see if the sequence repeats itself
+            for (int i = 0; i < pass.Length; i++)
+            {
+                if (i < pass.Length - 1)
+                {
+                    var first = pass[i].ToString();
+                    var next = pass[i + 1].ToString();
+                    if (sequences.Contains(first + next))
+                    {
+                        return false;
+                    }
+                }
+            }
+            //everything is good return true
+            return true;
+        }
+
+        public static bool PasswordLength(string pass)
+        {
+            if (pass.Length >= 5 && pass.Length <= 12)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool OneUpperOneLower(string pass)
+        {
+            //(?=.*[a - z])         #At least one lower case
+            //(?=.*[A - Z])         #At least one upper case
+            var regex = new Regex("^(?=.*[a-z])(?=.*[A-Z])");
+            if (regex.IsMatch(pass))
+                return true;
+            return false;
+        }
+
+        public static void PatientsNProblems()
+        {
+            //Develop data structure 
+            //problems are bool
+            //
+            List<Patient> patients = new List<Patient>();
+            patients.Add(new Patient()
+                {
+                    Id = 1, 
+                    Name = "John Doe",
+                    Problem = new List<Problem>()
+                    {
+                       new Problem()
+                       {
+                           Name = "Diabetes",
+                           HasProblem = true,
+                       },
+                       new Problem()
+                       {
+                           Name = "Liver Disease",
+                           HasProblem = true
+                       },
+                        new Problem()
+                        {
+                            Name = "Kidney Disease",
+                            HasProblem = true
+                        },
+                    }
+                });
+
+            patients.Add(new Patient()
+            {
+                Id = 1,
+                Name = "Henry Doe",
+                Problem = new List<Problem>()
+                {
+                    new Problem()
+                    {
+                        Name = "Diabetes",
+                        HasProblem = true,
+                    },
+                    new Problem()
+                    {
+                        Name = "Liver Disease",
+                        HasProblem = false
+                    },
+                    new Problem()
+                    {
+                        Name = "Kidney Disease",
+                        HasProblem = false
+                    },
+                }
+            });
+
+            var totalWithAtLeast3 = GetPatientsWithAtLeastThree(patients);
+            //should be one
+            Debug.WriteLine(totalWithAtLeast3);
+        }
+
+        public static List<Patient> GetPatientsWithAtLeastThree(List<Patient> patients)
+        {
+            List<Patient> pWithThree = new List<Patient>();
+            var count = 0;
+            foreach (var p in patients)
+            {
+                var total = p.Problem.Where(x => x.HasProblem == true).Count();
+                if(total >= 3)
+                    pWithThree.Add(p);
+                
+
+            }
+
+            return pWithThree;
+        }
+
+        public static void CowsAndBulls()
+        {
+            //Player A chooses a word
+            //Player B guesses the word 
+
+        }
+
+        public static void GetElementsCountClockWise2DArray()
+        {
+            string[,] codes = new string[,]
+            {
+                {"AA", "BB"},
+                {"CC", "DD"}
+            };
+            for (int i = 0; i <= codes.GetUpperBound(0); i++)
+            {
+                string s1 = codes[0, i];
+                string s2 = codes[1, i];
+                Debug.WriteLine("{0}, {1}", s1, s2);
+            }
+        }
+
+        public static void GetElementsClockWise2DArray()
+        {
+            string[,] codes = new string[,]
+            {
+                {"AA", "BB"},
+                {"CC", "DD"}
+            };
+            for (int i = 0; i <= codes.GetUpperBound(0); i++)
+            {
+                string s1 = codes[i, 0];
+                string s2 = codes[i, 1];
+                Debug.WriteLine("{0}, {1}", s1, s2);
+            }
+        }
+
+        public static void ConstructTriangleFormArray()
+        {
+            var path = new int[] { 4, 7, 3, 6, 7 };
+
+            //for (int i = 0; i < path.Length; i++)
+            //{
+                //11
+                var eleven = path[0] + path[1];
+                var ten = path[1] + path[2];
+                var nine = path[2] + path[3];
+                var thirteen = path[3] + path[4];
+            //}
+            
+
+            var t21 = eleven + ten;
+            var t19 = ten + nine;
+            var t22 = nine + thirteen;
+
+
+            var t40 = t21 + t19;
+            var t41 = t19 + t22;
+
+            var t81 = t40 + t41;
+
+            var l1 = string.Join(",", path);
+            var l2 = eleven.ToString() + ',' + ten.ToString() + ',' + nine.ToString() + ',' + thirteen.ToString();
+            var l3 = t21.ToString() + ',' + t19.ToString() + ',' + t22.ToString();
+            var l4 = t40.ToString() + ',' + t41.ToString();
+            var l5 = t81.ToString();
+
+            Debug.WriteLine(l5);
+            Debug.WriteLine(l4);
+            Debug.WriteLine(l3);
+            Debug.WriteLine(l2);
+            Debug.WriteLine(l1);
+        }
+
+        public static void WalkingRobot(int x)
+        {
+            var currentStep = 0;
+            //x steps forward
+            var path = new int[] {1,2,3,4,5,6,7,8};
+            if (path.Length > x)
+            {
+                currentStep = x;
+                currentStep = x + 1;
+                currentStep = + x;
+            }
+
+        }
+
+        public static void TwoDimensionalSpaceAllPermutations()
+        {
+            int[,] array2D = new int[,] { 
+                { 1, 2, 3 }, 
+                { 4, 5, 6 }, 
+                { 7, 8, 9 }, 
+                { 10, 11, 12 }
+            };
+
+            var rowCount = array2D.GetLength(0);
+            var colCount = array2D.GetLength(1);
+
+            for (int row = 0; row < rowCount; row++)
+            {
+                for (int col = 0; col < colCount; col++)
+                    Debug.Write($"{array2D[row, col]}\t");
+               
+            }
+        }
+
+        public static char ConvertKeyPad(string numberToConvert, int num)
+        {
+            List<Button> buttons = new List<Button>();
+            
+            buttons.Add(new Button()
+            {
+                ButtonName = '1',
+                AlphaNames = new char[] { 'A','B','C'}
+            });
+
+            foreach (var button in buttons)
+            {
+                if(button.ButtonName == '1')
+                    Debug.WriteLine(button.AlphaNames.ToString());
+                break;
+                //..and so on...
+            }
+
+
+            char value = '\0';
+            switch (num)
+            {
+                case 1:
+                    value =  'A';
+                break;
+            }
+
+            return value;
+        }
+
+        public static string PhoneNumbersMassage(string phone, char[] disallowed)
+        {
+            //
+            char start;
+            char end;            
+            //compare each to validate if two adjacent
+            //characters are the same 
+
+            for (int i = 0; i < phone.Length; i++)
+            {
+                if (phone[i] > 0)
+                {
+                    int first = i + 1;
+                    start = phone[first];
+                    end = phone[i];
+                    Debug.WriteLine($"start:{start},end:{end}");
+                    if (start != end)
+                    {
+                        //create all variations
+
+                    }
+                }
+            }
+            return string.Empty;
+        }
+
 
         public static string MassageAlphaNumerics(string alphanumerics)
         {

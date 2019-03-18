@@ -47,10 +47,16 @@
   <ItemGroup>
     <Compile Include="BinaryTree.cs" />
     <Compile Include="Board.cs" />
+    <Compile Include="Button.cs" />
     <Compile Include="formPermut.cs" />
+    <Compile Include="KeyPad.cs" />
     <Compile Include="Node.cs" />
+    <Compile Include="Patient.cs" />
+    <Compile Include="PatientMed.cs" />
+    <Compile Include="Problem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpiralWrite.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
